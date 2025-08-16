@@ -1,7 +1,12 @@
 const mongoose = require("mongoose");
+
 const studentSchema = new mongoose.Schema({
   name: { type: String, required: true },
   class: { type: mongoose.Schema.Types.ObjectId, ref: "Class" },
+  studentId: { type: String, unique: true, required: true },
+  gender: { type: String, enum: ["Male", "Female"], required: true },
+  dateOfBirth: { type: Date, required: true },
+  parentContact: { type: String, required: true },
   feeStatus: [
     {
       month: { type: String, required: true },
@@ -17,13 +22,14 @@ const studentSchema = new mongoose.Schema({
         ref: "Admin",
         required: true,
       },
-    },
-  ],
-  grades: [
-    {
-      subject: String,
-      score: Number,
+      receiptNo: { type: String, required: true },
+      status: {
+        type: String,
+        enum: ["Paid", "Partial", "Debt"],
+        default: "Paid",
+      },
     },
   ],
 });
+
 module.exports = mongoose.model("Student", studentSchema);
